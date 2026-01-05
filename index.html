@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Test Generator - Create educational tests with AI">
+    <meta name="author" content="Artnestico">
+    <title>AI Test Generator | Artnestico</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- DOCX Library -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="url(#gradient)" />
+                    <path d="M20 10L25 15H22V25H18V15H15L20 10Z" fill="white" />
+                    <path d="M12 28H28V30H12V28Z" fill="white" />
+                    <defs>
+                        <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40">
+                            <stop offset="0%" stop-color="#3b82f6" />
+                            <stop offset="100%" stop-color="#2563eb" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>AI Test Generator</h1>
+            </div>
+            <div class="author">by Artnestico</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="card">
+                <h2 class="card-title">Створити новий тест</h2>
+                <p class="card-description">Введіть тему та оберіть кількість питань кожного типу</p>
+
+                <form id="testForm" class="test-form">
+                    <!-- Class and Lesson Inputs -->
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="grade" class="form-label">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path
+                                        d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                                </svg>
+                                Клас
+                            </label>
+                            <input type="text" id="grade" name="grade" class="form-input" placeholder="Наприклад: 10-А"
+                                required>
+                        </div>
+
+                        <div class="form-group half-width">
+                            <label for="lesson" class="form-label">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                Номер уроку
+                            </label>
+                            <input type="text" id="lesson" name="lesson" class="form-input" placeholder="Наприклад: 15">
+                        </div>
+                    </div>
+
+                    <!-- Topic Input -->
+                    <div class="form-group">
+                        <label for="topic" class="form-label">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                <path fill-rule="evenodd"
+                                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Тема уроку
+                        </label>
+                        <input type="text" id="topic" name="topic" class="form-input"
+                            placeholder="Наприклад: Перша світова війна" required>
+                    </div>
+
+                    <!-- Source Text Input -->
+                    <div class="form-group">
+                        <label for="sourceText" class="form-label">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Текст для генерації (обов'язково)
+                        </label>
+                        <textarea id="sourceText" name="sourceText" class="form-input form-textarea"
+                            placeholder="Вставте текст лекції, параграфа або статті, на основі якого потрібно створити тест..."
+                            required rows="6"></textarea>
+                    </div>
+
+                    <!-- Question Types -->
+                    <div class="question-types">
+                        <h3 class="section-title">Типи питань</h3>
+
+                        <div class="question-type-grid">
+                            <!-- Single Choice -->
+                            <div class="question-type-card">
+                                <div class="question-type-header">
+                                    <div class="question-type-icon"
+                                        style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <circle cx="12" cy="12" r="3" fill="currentColor" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="question-type-title">Одна правильна відповідь</h4>
+                                        <p class="question-type-desc">4 варіанти (a, b, c, d)</p>
+                                    </div>
+                                </div>
+                                <input type="number" id="singleChoice" name="singleChoice" class="question-input"
+                                    min="0" max="50" value="5">
+                            </div>
+
+                            <!-- Multiple Choice -->
+                            <div class="question-type-card">
+                                <div class="question-type-header">
+                                    <div class="question-type-icon"
+                                        style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                                            <path d="M6.5 6.5L6.5 6.51" />
+                                            <path d="M17.5 6.5L17.5 6.51" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="question-type-title">Дві правильні відповіді</h4>
+                                        <p class="question-type-desc">5 варіантів (a, b правильні)</p>
+                                    </div>
+                                </div>
+                                <input type="number" id="multipleChoice" name="multipleChoice" class="question-input"
+                                    min="0" max="50" value="3">
+                            </div>
+
+                            <!-- Matching -->
+                            <div class="question-type-card">
+                                <div class="question-type-header">
+                                    <div class="question-type-icon"
+                                        style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="question-type-title">Встановлення відповідності</h4>
+                                        <p class="question-type-desc">4 пари для зіставлення</p>
+                                    </div>
+                                </div>
+                                <input type="number" id="matching" name="matching" class="question-input" min="0"
+                                    max="50" value="2">
+                            </div>
+
+                            <!-- Sorting -->
+                            <div class="question-type-card">
+                                <div class="question-type-header">
+                                    <div class="question-type-icon"
+                                        style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M7 12h10M11 18h2" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="question-type-title">Сортування</h4>
+                                        <p class="question-type-desc">Хронологічний/логічний порядок</p>
+                                    </div>
+                                </div>
+                                <input type="number" id="sorting" name="sorting" class="question-input" min="0" max="50"
+                                    value="2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button type="submit" class="btn-generate" id="generateBtn">
+                        <span class="btn-text">Згенерувати тест</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+
+                    <!-- Loading State -->
+                    <div class="loading-container" id="loadingContainer" style="display: none;">
+                        <div class="spinner"></div>
+                        <p class="loading-text" id="loadingText">Генерація питань...</p>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="error-message" id="errorMessage" style="display: none;"></div>
+                </form>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🤖</div>
+                    <h3>AI-генерація</h3>
+                    <p>Використовує Gemini AI для створення якісних питань</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📄</div>
+                    <h3>2 варіанти</h3>
+                    <p>Автоматично створює два варіанти тесту</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚡</div>
+                    <h3>Швидко</h3>
+                    <p>Генерація займає лише кілька секунд</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 <strong>Artnestico</strong> | AI Test Generator</p>
+            <p class="footer-subtitle">Створено з ❤️ для освіти</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/modules/single_choice.js"></script>
+    <script type="module" src="js/modules/multiple_choice.js"></script>
+    <script type="module" src="js/modules/matching.js"></script>
+    <script type="module" src="js/modules/sorting.js"></script>
+    <script type="module" src="js/docx_exporter.js"></script>
+    <script type="module" src="js/generator.js"></script>
+</body>
+
+</html>
